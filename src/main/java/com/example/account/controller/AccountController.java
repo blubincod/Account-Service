@@ -16,7 +16,7 @@ public class AccountController {
 
 
     @PostMapping("/account")
-    public String createAccount(@RequestBody @Valid ) {
+    public String createAccount(@RequestBody @Valid abc) {
         accountService.createAccount();
         return "success";
     }
