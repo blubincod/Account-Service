@@ -18,24 +18,28 @@ public class LockService {
 
     public void lock(String accountNumber) {
         RLock lock = redissonClient.getLock(getLockKey(accountNumber));
-        log.debug("Trying lock for accountNumber : {}",accountNumber);
+        log.debug("Trying lock for accountNumber : {}", accountNumber);
 
         try {
             boolean isLock = lock.tryLock(1, 5, TimeUnit.SECONDS);
-            if(!isLock) {
+            if (!isLock) {
                 log.error("======Lock acquisition failed=====");
                 throw new AccountException(ErrorCode.ACCOUNT_TRANSACTION_LOCK);
             }
+        } catch (AccountException e) {
+            throw e;
+
         } catch (Exception e) {
-            log.error("Redis lock failed");
+            log.error("Redis lock failed", e);
         }
     }
+
     public void unlock(String accountNumber) {
-        log.debug("Unlock for accountNumber : {}",accountNumber);
+        log.debug("Unlock for accountNumber : {}", accountNumber);
         redissonClient.getLock(getLockKey(accountNumber)).unlock();
     }
 
     private static String getLockKey(String accountNumber) {
-        return "ACLK"+ accountNumber;
+        return "ACLK" + accountNumber;
     }
 }
