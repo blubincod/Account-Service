@@ -1,15 +1,12 @@
 package com.example.account.service;
 
 import com.example.account.aop.AccountLockIdInterface;
-import com.example.account.dto.UseBalance;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 @Aspect
 @Component
@@ -24,9 +21,9 @@ public class LockAopAspect {
             AccountLockIdInterface request
     ) throws Throwable {
         lockService.lock(request.getAccountNumber());
-        try{
+        try {
             return pjp.proceed();
-        }finally {
+        } finally {
             lockService.unlock(request.getAccountNumber());
         }
     }
