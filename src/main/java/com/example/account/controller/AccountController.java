@@ -1,6 +1,7 @@
 package com.example.account.controller;
 
 import com.example.account.domain.Account;
+import com.example.account.dto.CreateAccount;
 import com.example.account.service.AccountService;
 import com.example.account.service.RedisTestService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,11 @@ public class AccountController {
 
 
     @PostMapping("/account")
-    public String createAccount(@RequestBody @Valid ) {
-        accountService.createAccount();
+    public CreateAccount.Response createAccount(
+            @RequestBody @Valid CreateAccount.Request request) {
+        accountService.createAccount(
+                request.getUserId(),
+                request.getInitialBalance());
         return "success";
     }
 
