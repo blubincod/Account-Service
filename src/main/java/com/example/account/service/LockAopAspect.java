@@ -23,11 +23,11 @@ public class LockAopAspect {
             ProceedingJoinPoint pjp,
             AccountLockIdInterface request
     ) throws Throwable {
-//        lockService.lock(accountNumber);
+        lockService.lock(request.getAccountNumber());
         try{
             return pjp.proceed();
         }finally {
-//            lockService.unlock(accountNumber);
+            lockService.unlock(request.getAccountNumber());
         }
     }
 }
